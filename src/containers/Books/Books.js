@@ -13,13 +13,13 @@ const styles = theme => ({
     },
 });
 
-class Books extends React.Component {
+class Books extends Component {
 
     state = {
         books: [],
         prevSearch: "",
         errorMessage: "",
-        loading : true
+        loading: true
     }
 
     constructor(props) {
@@ -29,7 +29,6 @@ class Books extends React.Component {
     }
 
     getBooks() {
-        
         axios.post('/api/books/search', {
             search: this.props.searchString
         })
@@ -60,7 +59,7 @@ class Books extends React.Component {
         return (
             <div style={{ overflow: 'hidden' }}>
                 <Divider className="mt20 mb20" />
-                <span className="pd10"><b>Search result books for : </b> {this.props.searchString}</span>
+                <span className="pd10"><b>Search results for books: </b> {this.props.searchString}</span>
                 <Divider className="mt20" />
                 {this.state.books.length > 0 ? (
                     <Grid container spacing={24} style={{ padding: 24 }}>
@@ -76,8 +75,8 @@ class Books extends React.Component {
                     </div>
                 }
 
-               {this.state.loading ? (<Spinner />) :''}
-               <Divider className="mt20 mb20" />
+                {this.state.loading ? (<Spinner />) : ''}
+                <Divider className="mt20 mb20" />
             </div>
         )
     }

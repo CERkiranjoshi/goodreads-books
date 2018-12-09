@@ -8,23 +8,23 @@ import Typography from '@material-ui/core/Typography'
 import Aux from '../../hoc/_Aux/_Aux';
 
 
-const Book = (props) => {
+const Similarbook = (props) => {
     return (
         <Aux>
             {props.book ? (
-                <Link className='cardlink' to={'bookdetails/' + props.book.best_book.id}>
+                <Link className='cardlink' to={'/bookdetails/' + props.book.id}>
                     <Card>
                         <CardActionArea>
                             <CardMedia style={{ height: 110, paddingTop: '10%', backgroundSize: 'auto' }}
-                                image={props.book.best_book.image_url}
-                                title={props.book.best_book.title}
+                                image={props.book.image_url}
+                                title={props.book.title}
                             />
                             <CardContent>
                                 <Typography gutterBottom variant="h5" component="h2">
-                                    {props.book.best_book.author.name}
+                                    {props.book.authors.author.name}
                                 </Typography>
                                 <Typography component="p">
-                                    {props.book.best_book.title} <br />
+                                    {props.book.title} <br />
                                     <b>Ratings</b> : {props.book.average_rating} , <b>Review</b> : {props.book.text_reviews_count}
                                 </Typography>
                             </CardContent>
@@ -35,4 +35,4 @@ const Book = (props) => {
         </Aux>
     )
 }
-export default Book
+export default Similarbook

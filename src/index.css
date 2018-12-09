@@ -28,3 +28,12 @@ code {
   text-align: center;
   color: red;
 }
+.Content {
+  margin-top: 72px;
+}
+.cardlink{
+  text-decoration: none;
+}
+.imagecontent{
+  text-align: center;
+}

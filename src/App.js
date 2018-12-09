@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import HeaderGoodreads from './components/Appbar/Header'
 import Books from './containers/Books/Books'
+import Bookdetails from './containers/Books/Bookdetails'
+import Layout from './hoc/Layout/Layout';
 
 class App extends Component {
 
@@ -8,7 +11,7 @@ class App extends Component {
     searchString: "Science",
     search: true
   }
-// as by default i want to show books for science field so search is set to true
+  // as by default i want to show books for science field so search is set to true
   formHeader(params) {
     this.setState({
       searchString: params,
@@ -18,11 +21,16 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <HeaderGoodreads callback={this.formHeader.bind(this)} />
-        {this.state.search ? (
-          <Books searchString={this.state.searchString} />
-        ) : "Please enter search keyword"}
+      <div>
+        <Layout>
+          <HeaderGoodreads callback={this.formHeader.bind(this)} />
+          <Switch>
+            <Route path="/bookdetails/:id" component={Bookdetails} />
+            <Route path="/" exact render={(props) => <Books {...props} searchString={this.state.searchString} /> } 
+            />
+            <Route path="*" component={()=>(<div className='pd10'>404 NOT FOUND</div>)} />
+          </Switch>
+        </Layout>
       </div>
     );
   }

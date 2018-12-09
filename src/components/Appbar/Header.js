@@ -7,6 +7,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Logo from '../Logo/Logo';
+import { withRouter } from 'react-router-dom';
 
 const styles = theme => ({
     root: {
@@ -60,7 +61,17 @@ const styles = theme => ({
 class PrimarySearchAppBar extends React.Component {
 
     state = {
-        searchString: ''
+        searchString: '',
+        showHeaderSearch: true
+    }
+    componentDidMount() {
+        // Note : need some more stuff to handle as search will not work on book details page
+        // const tpath = window.location.pathname
+        // if (tpath.indexOf("bookdetails") >= 0) {
+        //     this.setState({ showHeaderSearch: false })
+        // } else {
+        //     this.setState({ showHeaderSearch: true })
+        // }
     }
 
     onSearchInputChange = (event) => {
@@ -70,7 +81,7 @@ class PrimarySearchAppBar extends React.Component {
             this.setState({ searchString: '' })
         }
     }
-    
+
     getContent = (event) => {
         if (this.state.searchString.length > 3) {
             this.props.callback(event.target.value);
@@ -79,7 +90,6 @@ class PrimarySearchAppBar extends React.Component {
 
     render() {
         const { classes } = this.props;
-
         return (
             <div className={classes.root}>
                 <AppBar position="static" color="secondary">
@@ -87,24 +97,27 @@ class PrimarySearchAppBar extends React.Component {
                         <div className="Logo">
                             <Logo />
                         </div>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <SearchIcon />
+                        {this.state.showHeaderSearch ? (
+                            <div className={classes.search}>
+                                <div className={classes.searchIcon}>
+                                    <SearchIcon />
+                                </div>
+                                <InputBase
+                                    placeholder="Search for Books…"
+                                    onChange={this.onSearchInputChange}
+                                    onKeyPress={event => {
+                                        if (event.key === 'Enter') {
+                                            this.getContent(event)
+                                        }
+                                    }}
+                                    classes={{
+                                        root: classes.inputRoot,
+                                        input: classes.inputInput,
+                                    }}
+                                />
                             </div>
-                            <InputBase
-                                placeholder="Search for Books…"
-                                onChange={this.onSearchInputChange}
-                                onKeyPress={event => {
-                                    if (event.key === 'Enter') {
-                                        this.getContent(event)
-                                    }
-                                }}
-                                classes={{
-                                    root: classes.inputRoot,
-                                    input: classes.inputInput,
-                                }}
-                            />
-                        </div>
+                        ) : ''
+                        }
                         <div className={classes.grow} />
                     </Toolbar>
                 </AppBar>
@@ -115,7 +128,7 @@ class PrimarySearchAppBar extends React.Component {
 
 PrimarySearchAppBar.propTypes = {
     classes: PropTypes.object.isRequired,
-    callback : PropTypes.func
+    callback: PropTypes.func
 };
 
 export default withStyles(styles)(PrimarySearchAppBar);
