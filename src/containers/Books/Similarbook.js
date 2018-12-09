@@ -12,7 +12,7 @@ const Similarbook = (props) => {
     return (
         <Aux>
             {props.book ? (
-                <Link className='cardlink' to={'/bookdetails/' + props.book.id}>
+                <Link className='cardlink' to={'/bookdetails/' + props.book.id} onClick={window.location.reload}>
                     <Card>
                         <CardActionArea>
                             <CardMedia style={{ height: 110, paddingTop: '10%', backgroundSize: 'auto' }}
@@ -25,7 +25,7 @@ const Similarbook = (props) => {
                                 </Typography>
                                 <Typography component="p">
                                     {props.book.title} <br />
-                                    <b>Ratings</b> : {props.book.average_rating} , <b>Review</b> : {props.book.text_reviews_count}
+                                    <b>Ratings</b> : {props.book.average_rating}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
