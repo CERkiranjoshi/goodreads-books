@@ -1,6 +1,7 @@
 import React from 'react';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from '../../axios-books';
+// import axios from 'axios';
 // import PropTypes from 'prop-types';
 // import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
@@ -17,39 +18,57 @@ class BookDetails extends React.Component {
     state = {
         bookdetails: null,
         errorMessage: "",
-        loading: true
+        loading: true,
+        bookid: null
     }
+
     componentDidMount() {
-        const bookid = this.props.match.params.id
-        this.getBookDetails(bookid);
+        this.getBookDetails();
     }
 
-    getBookDetails(bookid) {
-        axios.post('/api/books/search/id', {
-                id: bookid
-            })
-            .then(response => {
-                if (response.data.data.GoodreadsResponse.book) {
-                    this.setState({ bookdetails: response.data.data.GoodreadsResponse.book });
-                } else {
-                    this.setState({ bookdetails: null });
-                    this.setState({ errorMessage: 'No details available for this book id :' + bookid });
-                }
-                this.setState({ loading: false });
+    componentDidUpdate() {
+        this.getBookDetails();
+    }
 
-            })
-            .catch(error => {
-                this.setState({ loading: false });
-                this.setState({ errorMessage: 'Something went wrong please try agian later' });
-            });
+
+    getBookDetails() {
+        if (this.props.match.params.id) {
+            if ((!this.state.bookdetails && !this.state.bookid) || (this.state.bookdetails && this.state.bookid != this.props.match.params.id)) {
+                    axios.post('/api/books/search/id', {
+                        id: this.props.match.params.id
+                    })
+                    .then(response => {
+                        this.setState({ bookid: this.props.match.params.id });
+                        if (response.data && response.data.data.GoodreadsResponse.book) {
+                            this.setState({ bookdetails: response.data.data.GoodreadsResponse.book });
+                        } else {
+                            this.setState({ bookdetails: null });
+                            this.setState({ errorMessage: 'No details available for this book id :' + this.props.match.params.id });
+                        }
+                        this.setState({ loading: false });
+
+                    })
+                    .catch(error => {
+                        this.setState({ bookid: this.props.match.params.id });
+                        this.setState({ loading: false });
+                        this.setState({ errorMessage: 'Something went wrong please try agian later' });
+                    });
+            }
+        }
+
+        // axios.get('/data/individualbook.json')
 
     }
     render() {
         const { classes, theme } = this.props;
         return (
             <Aux>
+
                 {this.state.loading ? (<Spinner />
-                ) :
+                ) : ''}
+
+                { !this.state.loading && this.state.bookdetails ? (
+
                     <div>
                         <Divider className="mt20 mb20"></Divider>
                         <Card>
@@ -96,7 +115,7 @@ class BookDetails extends React.Component {
                                         <Divider className="mt20 mb20" />
                                         <span className="pd10"><b>Similar books :</b></span>
                                         <Divider className="mt20" />
-                                        {this.state.bookdetails.similar_books.book.length > 0 ? (
+                                        {this.state.bookdetails.similar_books && this.state.bookdetails.similar_books.book.length > 0 ? (
                                             <Grid container spacing={24} style={{ padding: 24 }}>
                                                 {this.state.bookdetails.similar_books.book.map(currentBook =>
                                                     (
@@ -105,13 +124,14 @@ class BookDetails extends React.Component {
                                                         </Grid>
                                                     ))}
                                             </Grid>
-                                        ) : ''
+                                        ) : 'No related books found'
                                         }
                                     </div>
                                 </CardContent>
                             </div>
                         </Card>
                     </div>
+                ) : 'Books Details Forbidden'
 
                 }
             </Aux>

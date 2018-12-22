@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -58,20 +58,11 @@ const styles = theme => ({
     },
 });
 
-class PrimarySearchAppBar extends React.Component {
+class PrimarySearchAppBar extends Component {
 
     state = {
         searchString: '',
         showHeaderSearch: true
-    }
-    componentDidMount() {
-        // Note : need some more stuff to handle as search will not work on book details page
-        // const tpath = window.location.pathname
-        // if (tpath.indexOf("bookdetails") >= 0) {
-        //     this.setState({ showHeaderSearch: false })
-        // } else {
-        //     this.setState({ showHeaderSearch: true })
-        // }
     }
 
     onSearchInputChange = (event) => {
@@ -83,8 +74,12 @@ class PrimarySearchAppBar extends React.Component {
     }
 
     getContent = (event) => {
+        const currentPath= this.props.location.pathname;
+        if(this.state.searchString.length > 3 && !currentPath.includes("/books/")){
+            this.props.history.replace( '/books/' + this.state.searchString);
+        }
         if (this.state.searchString.length > 3) {
-            this.props.callback(event.target.value);
+            this.props.callback(event.target.value.trim());
         }
     }
 
@@ -131,4 +126,4 @@ PrimarySearchAppBar.propTypes = {
     callback: PropTypes.func
 };
 
-export default withStyles(styles)(PrimarySearchAppBar);
+export default withRouter(withStyles(styles)(PrimarySearchAppBar));

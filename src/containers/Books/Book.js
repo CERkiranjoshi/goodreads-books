@@ -12,7 +12,7 @@ const Book = (props) => {
     return (
         <Aux>
             {props.book ? (
-                <Link className='cardlink' to={'bookdetails/' + props.book.best_book.id}>
+                <Link className='cardlink' to={'/booksdetails/' + props.book.best_book.id}>
                     <Card>
                         <CardActionArea>
                             <CardMedia style={{ height: 110, paddingTop: '10%', backgroundSize: 'auto' }}

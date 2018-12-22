@@ -77,6 +77,7 @@ class Books extends Component {
 
                 {this.state.loading ? (<Spinner />) : ''}
                 <Divider className="mt20 mb20" />
+                
             </div>
         )
     }

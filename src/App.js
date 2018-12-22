@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch , Redirect } from 'react-router-dom';
 import HeaderGoodreads from './components/Appbar/Header'
-import Books from './containers/Books/Books'
-import Bookdetails from './containers/Books/Bookdetails'
+import Books from './containers/Books/Books';
+import Bookdetails from './containers/Books/Bookdetails';
 import Layout from './hoc/Layout/Layout';
 
 class App extends Component {
@@ -25,10 +25,13 @@ class App extends Component {
         <Layout>
           <HeaderGoodreads callback={this.formHeader.bind(this)} />
           <Switch>
-            <Route path="/bookdetails/:id" component={Bookdetails} />
-            <Route path="/" exact render={(props) => <Books {...props} searchString={this.state.searchString} /> } 
+            <Route path="/books" exact render={(props) => <Books {...props} searchString={this.state.searchString} /> } 
             />
-            <Route path="*" component={()=>(<div className='pd10'>404 NOT FOUND</div>)} />
+            <Route path="/books/:search" exact  render={(props) => <Books {...props} searchString={this.state.searchString} /> } 
+            />
+            <Route path='/booksdetails/:id' exact component={Bookdetails} />
+            <Redirect from="/" exact to="/books" />
+            <Route render={() => <h1 className='pd10'>Not found</h1>}/>
           </Switch>
         </Layout>
       </div>

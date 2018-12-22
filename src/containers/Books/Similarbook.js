@@ -12,7 +12,7 @@ const Similarbook = (props) => {
     return (
         <Aux>
             {props.book ? (
-                <Link className='cardlink' to={'/bookdetails/' + props.book.id} onClick={window.location.reload}>
+                <Link className='cardlink' to={'/booksdetails/' + props.book.id}>
                     <Card>
                         <CardActionArea>
                             <CardMedia style={{ height: 110, paddingTop: '10%', backgroundSize: 'auto' }}
