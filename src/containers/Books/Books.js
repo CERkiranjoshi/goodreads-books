@@ -57,7 +57,7 @@ class Books extends Component {
         }
 
         return (
-            <div style={{ overflow: 'hidden' }}>
+            <div className="books-container" style={{ overflow: 'hidden' }}>
                 <Divider className="mt20 mb20" />
                 <span className="pd10"><b>Search results for books: </b> {this.props.searchString}</span>
                 <Divider className="mt20" />
